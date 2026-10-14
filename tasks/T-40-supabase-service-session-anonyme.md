@@ -3,7 +3,7 @@ id: T-40
 title: SupabaseService et session anonyme
 status: todo
 phase: 4 Authentification et compte
-depends_on: [T-30, T-31, T-10]
+depends_on: [T-30, T-31, T-11]
 manual: false
 estimate: M
 model: fable

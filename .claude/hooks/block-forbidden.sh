@@ -28,7 +28,12 @@ case "$cmd" in
   *"rm -rf /"*|*"rm -rf ~"*|*"rm -rf ."*|*"rm -rf *"*|*"rm -fr "*|*"rm -r "*)
     block "rm récursif" "seul build/ peut être effacé, avec flutter clean." ;;
   *"xcrun altool"*|*"xcrun notarytool"*|*"fastlane"*|*"gradlew publish"*|*"gradle publish"*|*"supply"*"--track"*)
-    block "envoi vers les stores" "la soumission aux stores reste manuelle (docs/manual-setup.md)." ;;
+    block "envoi direct vers les stores" "l'envoi et la soumission passent par scripts/ops/store-upload.sh et store-submit.sh (demande de permission, phrase de confirmation)." ;;
+  *"cat secrets/"*|*"cat ./secrets/"*|*"source secrets/"*|*". secrets/"*|*"less secrets/"*|*"head secrets/"*|*"tail secrets/"*|*"grep "*"secrets/"*)
+    case "$cmd" in
+      *"secrets/README.md"*) ;;
+      *) block "lecture de secrets/" "les jetons ne sont lus que par les scripts de scripts/ops/ ; vérifie la présence avec scripts/ops/check-secrets.sh." ;;
+    esac ;;
   *"--skip"*"flutter test"*|*"flutter test"*"--skip"*)
     block "flutter test --skip" "aucun test n'est ignoré." ;;
   *"cat env/"*".json"*|*"cat "*".keystore"*|*"cat "*"key.properties"*|*"cat "*".p8"*|*"cat "*".p12"*)

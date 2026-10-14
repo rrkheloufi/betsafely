@@ -30,7 +30,10 @@ test/           tests, miroir de lib/ ; test/testing/fakes/
 integration_test/  parcours critique
 supabase/       config, migrations, functions, tests, seed
 site/           site légal et support (GitHub Pages)
-docs/           architecture, base de données, monétisation, design tokens, workflow, actions manuelles
+docs/           architecture, base de données, monétisation, design tokens, workflow, jetons et actions manuelles
+ops/            données versionnées des scripts d'exploitation (paywall, prix, fiches stores)
+secrets/        jetons fournis par Rayan, ignorés par git, lus par scripts/ops/ seulement
+scripts/ops/    provisionnement et envoi par API (Supabase, RevenueCat, Apple, Play, Sentry, PostHog, Brevo)
 tasks/          index et spécifications des tâches
 scripts/        scripts de contrôle lancés par make check
 .claude/        CLAUDE.md, settings, rules, skills, agents, hooks

@@ -3,7 +3,7 @@ id: T-20
 title: Migration des référentiels et seed
 status: todo
 phase: 2 Backend
-depends_on: [T-10]
+depends_on: [T-11]
 manual: false
 estimate: M
 model: opus

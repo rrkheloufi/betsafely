@@ -25,16 +25,17 @@ Les textes du paywall, des mentions d'abonnement, des notifications, des conditi
 ## Étape manuelle
 
 **Actions**
-1. Suivre docs/manual-setup.md, section T-136
+1. Faire relire par un natif par langue les fichiers de docs/review/<lang>.md produits par la tâche (ou valider soi-même) et déposer les corrections dans ces fichiers (docs/manual-setup.md, T-136)
 
 - [ ] Confirmé par Rayan (date : )
 
 **Vérifications automatisables**
-- Aucune : la confirmation cochée fait foi.
+- docs/review/es.md, pt.md, it.md, de.md contiennent la ligne `Relu le : AAAA-MM-JJ`
 
 ## Étapes
 
-1. Après confirmation manuelle : intégrer les corrections dans les ARB et `site/`, `make check`, commit.
+1. Avant la confirmation manuelle : générer `docs/review/<lang>.md` par langue (textes paywall, abonnement, notifications, conditions, confidentialité, fiches store, avec le glossaire du brief section 12 et une première passe de relecture par Claude signalant les doutes).
+2. Après confirmation manuelle : intégrer les corrections dans les ARB, `site/` et `ops/store-metadata/`, `make check`, commit.
 
 ## Tests
 

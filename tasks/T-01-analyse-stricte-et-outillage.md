@@ -26,21 +26,21 @@ L'analyse Dart est stricte, les hooks Claude Code et les scripts de contrôle to
 ## Étape manuelle
 
 **Actions**
-1. Installer FVM, le CLI Supabase, Docker, Deno, Xcode, Android Studio (voir docs/manual-setup.md, T-01)
-2. `flutter doctor` sans erreur bloquante
+1. Installer Xcode depuis le Mac App Store, l'ouvrir une fois et accepter la licence (seule étape sans ligne de commande ; voir docs/manual-setup.md, T-01)
 
 - [ ] Confirmé par Rayan (date : )
 
 **Vérifications automatisables**
-- `fvm flutter --version` correspond à .fvmrc
-- `supabase --version`, `deno --version`, `docker info` répondent
+- `xcodebuild -version` répond
+- `scripts/ops/bootstrap-macos.sh --check` est vert (FVM, Flutter de .fvmrc, CLI Supabase, Docker, Deno, CocoaPods, fastlane, jq, Android SDK)
 
 ## Étapes
 
-1. `analysis_options.yaml` : `include: package:flutter_lints/flutter.yaml`, `language: strict-casts: true, strict-inference: true, strict-raw-types: true`, règles supplémentaires `prefer_const_constructors`, `prefer_final_locals`, `avoid_print`, `always_declare_return_types`, `unawaited_futures`, `cancel_subscriptions`, `close_sinks`, `public_member_api_docs: false` ; exclusion de `**/*.g.dart`, `**/*.freezed.dart`.
-2. Vérifier que le hook Stop lance `flutter analyze` (créer `.dart_tool` est fait par pub get).
-3. Vérifier `scripts/check-architecture.sh` et `check-strings.sh` sur un fichier de test volontairement fautif (temporaire, non commité) puis le retirer.
-4. `make check` vert.
+1. Écrire `scripts/ops/bootstrap-macos.sh` (Homebrew : fvm, supabase/tap/supabase, deno, jq, cocoapods, fastlane, `--cask docker android-studio android-commandlinetools` ; `fvm install` depuis .fvmrc ; `sdkmanager` pour platform-tools, platforms;android-36, build-tools ; `flutter doctor --android-licenses` ; option `--check` qui vérifie sans installer) et l'exécuter.
+2. `analysis_options.yaml` : `include: package:flutter_lints/flutter.yaml`, `language: strict-casts: true, strict-inference: true, strict-raw-types: true`, règles supplémentaires `prefer_const_constructors`, `prefer_final_locals`, `avoid_print`, `always_declare_return_types`, `unawaited_futures`, `cancel_subscriptions`, `close_sinks`, `public_member_api_docs: false` ; exclusion de `**/*.g.dart`, `**/*.freezed.dart`.
+3. Vérifier que le hook Stop lance `flutter analyze` (créer `.dart_tool` est fait par pub get).
+4. Vérifier `scripts/check-architecture.sh` et `check-strings.sh` sur un fichier de test volontairement fautif (temporaire, non commité) puis le retirer.
+5. `make check` vert.
 
 ## Tests
 

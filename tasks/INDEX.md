@@ -4,7 +4,7 @@ Source de vérité de l'avancement avec le frontmatter de chaque tâche (`script
 
 Version visée : **1.0.0** = toutes les tâches de cet index.
 
-Tâches `model: fable` (erreur coûteuse ou silencieuse) : T-22, T-23, T-25, T-26, T-27, T-40, T-41, T-42, T-43, T-80, T-120, T-121.
+Tâches `model: fable` (erreur coûteuse ou silencieuse) : T-11, T-14, T-15, T-16, T-22, T-23, T-25, T-26, T-27, T-40, T-41, T-42, T-43, T-80, T-120, T-121.
 
 ## Phase 0 Socle
 
@@ -25,16 +25,19 @@ Tâches `model: fable` (erreur coûteuse ou silencieuse) : T-22, T-23, T-25, T-2
 
 | ID | Titre | Statut | Dépend de | Estimation | Manuel | Terminé le |
 |---|---|---|---|---|---|---|
-| T-10 | Projets Supabase dev et prod | todo | T-01 | S | oui |  |
-| T-11 | Projet RevenueCat, Test Store, produits, paywall, webhook | todo | T-10 | M | oui |  |
-| T-12 | Apps dans les stores, identifiants, keystore, abonnements | todo | T-02 | M | oui |  |
-| T-13 | Projets Sentry et PostHog | todo | T-10 | S | oui |  |
+| T-10 | Jetons d'accès des services (Supabase, RevenueCat, Sentry, PostHog, Brevo, Anthropic, Turnstile) | todo | T-01 | S | oui |  |
+| T-11 | Provisionnement des projets Supabase dev et prod par script | todo | T-10 | M | non |  |
+| T-12 | Fiches app dans les stores, clés API stores, Sign in with Apple | todo | T-02, T-10 | M | oui |  |
+| T-13 | Provisionnement Sentry, PostHog et Brevo par script | todo | T-11 | S | non |  |
+| T-14 | Provisionnement RevenueCat par API v2 (projet, apps, produits, offering, paywall, webhooks) | todo | T-11, T-12 | M | non |  |
+| T-15 | Provisionnement Apple par API (identifiants, capacités, signature, abonnements) | todo | T-12 | M | non |  |
+| T-16 | Signature Android et provisionnement Play par API (abonnements, pistes) | todo | T-12 | M | non |  |
 
 ## Phase 2 Backend
 
 | ID | Titre | Statut | Dépend de | Estimation | Manuel | Terminé le |
 |---|---|---|---|---|---|---|
-| T-20 | Migration des référentiels et seed | todo | T-10 | M | non |  |
+| T-20 | Migration des référentiels et seed | todo | T-11 | M | non |  |
 | T-21 | Migration des tables utilisateur et triggers de synchro | todo | T-20 | M | non |  |
 | T-22 | Policies RLS et tests pgTAP | todo | T-21 | L | non |  |
 | T-23 | Fonctions de quota de scan | todo | T-22 | M | non |  |
@@ -42,7 +45,7 @@ Tâches `model: fable` (erreur coûteuse ou silencieuse) : T-22, T-23, T-25, T-2
 | T-25 | Edge Function revenuecat-webhook et table entitlements | todo | T-22 | M | non |  |
 | T-26 | Edge Function delete-account | todo | T-25 | M | non |  |
 | T-27 | Jobs planifiés de purge | todo | T-25 | S | non |  |
-| T-28 | Déploiement du backend sur le projet dev | todo | T-20, T-21, T-22, T-23, T-24, T-25, T-26, T-27, T-11 | S | oui |  |
+| T-28 | Déploiement du backend sur le projet dev | todo | T-20, T-21, T-22, T-23, T-24, T-25, T-26, T-27, T-14 | S | non |  |
 
 ## Phase 3 Référentiel et préférences
 
@@ -55,7 +58,7 @@ Tâches `model: fable` (erreur coûteuse ou silencieuse) : T-22, T-23, T-25, T-2
 
 | ID | Titre | Statut | Dépend de | Estimation | Manuel | Terminé le |
 |---|---|---|---|---|---|---|
-| T-40 | SupabaseService et session anonyme | todo | T-30, T-31, T-10 | M | non |  |
+| T-40 | SupabaseService et session anonyme | todo | T-30, T-31, T-11 | M | non |  |
 | T-41 | Liens profonds et lien magique | todo | T-40, T-05 | M | non |  |
 | T-42 | Connexion Apple et Google par jeton natif | todo | T-41 | L | non |  |
 | T-43 | Suppression de compte et effacement local | todo | T-42, T-26 | M | non |  |
@@ -111,9 +114,9 @@ Tâches `model: fable` (erreur coûteuse ou silencieuse) : T-22, T-23, T-25, T-2
 
 | ID | Titre | Statut | Dépend de | Estimation | Manuel | Terminé le |
 |---|---|---|---|---|---|---|
-| T-110 | PurchasesService, SubscriptionRepository, paywall et gardes d'entitlement | todo | T-40, T-65, T-11 | L | non |  |
+| T-110 | PurchasesService, SubscriptionRepository, paywall et gardes d'entitlement | todo | T-40, T-65, T-14 | L | non |  |
 | T-111 | Restauration, abonnement dans le profil, erreur de facturation, N-04 | todo | T-110, T-81 | M | non |  |
-| T-112 | Achats sandbox et scan sur appareils réels | todo | T-111, T-90, T-12, T-28 | M | oui |  |
+| T-112 | Builds internes envoyés par script, achats sandbox sur appareils réels | todo | T-111, T-90, T-15, T-16, T-28 | M | oui |  |
 
 ## Phase 12 Synchronisation
 
@@ -142,10 +145,10 @@ Tâches `model: fable` (erreur coûteuse ou silencieuse) : T-22, T-23, T-25, T-2
 | ID | Titre | Statut | Dépend de | Estimation | Manuel | Terminé le |
 |---|---|---|---|---|---|---|
 | T-140 | Site légal et support (GitHub Pages) | todo | T-135 | M | non |  |
-| T-141 | Build release signé (appbundle et ipa) | todo | T-139, T-12 | S | oui |  |
+| T-141 | Build release signé (appbundle et ipa) | todo | T-139, T-15, T-16 | S | non |  |
 | T-142 | Recette sur appareils réels | todo | T-141, T-112, T-132 | M | oui |  |
-| T-143 | Fiches stores, déclarations de confidentialité et soumission | todo | T-142, T-136, T-140 | M | oui |  |
+| T-143 | Fiches stores par script, déclarations de confidentialité et soumission | todo | T-142, T-136, T-140 | M | oui |  |
 
 ## Graphe de départ
 
-`/batch` depuis un dépôt vierge enchaîne T-00, T-01 (s'arrête pour l'outillage), puis T-02 à T-09, et bute sur T-10 (projets Supabase). Faire T-10 à T-13 en avance (`/manual-done`) permet ensuite d'enchaîner T-20 à T-27, T-30, T-31, T-40 à T-43, T-50, T-51, T-60 à T-65, T-70 à T-73, T-80, T-81, T-90, T-100, T-101, T-110, T-111 sans interruption jusqu'à T-28 et T-112.
+`/batch` depuis un dépôt vierge enchaîne T-00, T-01 (s'arrête pour Xcode), puis T-02 à T-09 et bute sur T-10 (jetons). Déposer les jetons de T-10 et faire T-12 (fiches app et clés stores) dès le départ permet ensuite d'enchaîner T-11, T-13 à T-16, T-20 à T-28, T-30, T-31, T-40 à T-43, T-50, T-51, T-60 à T-65, T-70 à T-73, T-80, T-81, T-90, T-100, T-101, T-110, T-111 et l'envoi des builds internes de T-112 sans autre intervention ; seules les vérifications sur appareils réels (T-112, T-142), la relecture native (T-136) et les formulaires de confidentialité des consoles (T-143) restent manuelles.

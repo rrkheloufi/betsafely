@@ -6,13 +6,13 @@ Application mobile Flutter (iOS et Android) qui aide les parieurs sportifs à fa
 
 - `docs/architecture.md` : périmètre, navigation, features, couches, flux. Fait foi.
 - `docs/database.md` : schéma SQL, RLS, Edge Functions. Fait foi.
-- `docs/monetisation.md`, `docs/design-tokens.md`, `docs/workflow.md`, `docs/manual-setup.md`.
+- `docs/monetisation.md`, `docs/design-tokens.md`, `docs/workflow.md`, `docs/manual-setup.md` (jetons et seules actions sans API).
 - `tasks/INDEX.md` puis le fichier de la tâche en cours. L'état vit dans ces fichiers, pas dans la conversation.
 - Le brief produit (`brief.md`, hors dépôt) prime sur les docs pour les règles F-xx, N-xx, C-xx et P-xx.
 
 ## Commandes
 
-`make setup`, `make gen`, `make format`, `make analyze`, `make test`, `make test-db`, `make test-functions`, `make test-integration`, `make check`, `make run-dev`, `make build-dev`, `make build-prod`. Toujours `make check` avant un commit.
+`make setup`, `make gen`, `make format`, `make analyze`, `make test`, `make test-db`, `make test-functions`, `make test-integration`, `make check`, `make run-dev`, `make build-dev`, `make build-prod`. Toujours `make check` avant un commit. Exploitation : `scripts/ops/*.sh` (voir `scripts/ops/README.md`) et `/ops`.
 
 ## Stack
 
@@ -27,14 +27,14 @@ Flutter stable épinglé (`.fvmrc`), Dart strict, provider, go_router, freezed, 
 - MUST stocker les montants en entiers d'unités mineures ; aucune conversion de devise, la devise est un symbole d'affichage.
 - MUST appliquer C-01 à C-12 via `lib/domain/logic/bet_math.dart`, jamais réimplémentés ailleurs.
 - MUST activer la RLS sur toute nouvelle table ; toute policy a son test pgTAP.
-- MUST NOT mettre une clé `service_role`, un secret, une URL de projet réelle ni un identifiant RevenueCat réel dans le code ou les fichiers versionnés.
+- MUST NOT mettre une clé `service_role`, un secret, une URL de projet réelle ni un identifiant RevenueCat réel dans le code ou les fichiers versionnés. MUST NOT lire `secrets/` ni `env/*.json` : seuls les scripts de `scripts/ops/` les chargent, et n'en affichent jamais une valeur.
 - MUST vérifier les droits Premium par l'entitlement `premium` uniquement, jamais par un identifiant de produit.
 - MUST NOT envoyer une donnée de pari hors de l'appareil sans compte Premium synchronisé ; les images de scan ne sont jamais stockées ni journalisées.
 - MUST NOT célébrer un gain (P-03), afficher une cote non saisie (P-02), ni lier un opérateur (P-01). Un gain s'affiche en `text-primary` avec « + », une perte en `negative` avec « − ».
 - MUST NOT ajouter une fonctionnalité hors du périmètre de `docs/architecture.md`.
 - MUST appliquer la politique de tests minimale de `.claude/rules/tests.md` ; aucun skip, aucun test désactivé.
 - MUST écrire commentaires, commits et UI en français, identifiants de code en anglais, sans tiret cadratin ni demi-cadratin nulle part.
-- MUST NOT exécuter `git push`, `git push --force`, `git reset --hard`, `supabase db reset --linked`, `rm -rf` hors `build/`, ni aucune commande d'envoi vers les stores.
+- MUST NOT exécuter `git push`, `git push --force`, `git reset --hard`, `supabase db reset --linked`, `rm -rf` hors `build/`. Les consoles (Supabase, RevenueCat, stores, Sentry, PostHog, Brevo) se pilotent par les scripts de `scripts/ops/`, idempotents, sans `DELETE` ; l'envoi aux stores passe par `store-upload.sh` (permission) et la soumission par `store-submit.sh` (phrase de confirmation), jamais par `fastlane` ou `xcrun altool` directement.
 - MUST committer sur `dev` uniquement ; `main` n'avance que par `make`-free `git merge --ff-only` dans `/deploy prod`.
 
 ## Conventions

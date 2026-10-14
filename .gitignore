@@ -1,4 +1,6 @@
 # Secrets et environnements
+secrets/*
+!secrets/README.md
 env/*.json
 !env/*.example.json
 .env

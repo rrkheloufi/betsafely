@@ -3,8 +3,8 @@ id: T-141
 title: Build release signé (appbundle et ipa)
 status: todo
 phase: 14 Mise en production
-depends_on: [T-139, T-12]
-manual: true
+depends_on: [T-139, T-15, T-16]
+manual: false
 estimate: S
 model: opus
 done_at:
@@ -14,28 +14,18 @@ done_at:
 
 ## Objectif
 
-`make build-prod` produit un `.aab` et un `.ipa` signés du flavor prod, et le flavor dev reste non signé en release.
+`make build-prod` produit un `.aab` et un `.ipa` signés du flavor prod avec le keystore de T-16 et les profils de T-15, sans intervention.
 
 ## Contexte
 
-- docs/manual-setup.md, T-141
 - .claude/skills/deploy/SKILL.md
+- docs/manual-setup.md, T-141
 - `.claude/rules/` applicables et `CLAUDE.md`.
-
-## Étape manuelle
-
-**Actions**
-1. Suivre docs/manual-setup.md, section T-141
-
-- [ ] Confirmé par Rayan (date : )
-
-**Vérifications automatisables**
-- build/app/outputs/bundle/prodRelease/*.aab existe
-- build/ios/ipa/*.ipa existe
 
 ## Étapes
 
-1. Après confirmation manuelle : vérifier la configuration de signature (`build.gradle.kts` lit `key.properties` ; Xcode automatic signing avec l'équipe), `make build-prod`, consigner les tailles des artefacts.
+1. Vérifier que `build.gradle.kts` lit `key.properties` et que l'export iOS utilise `ios/ExportOptions.plist` (method app-store-connect, profils de `secrets/apple-signing.env`, signature manuelle) ; `flutter build ipa --export-options-plist`.
+2. `make build-prod`, consigner les tailles des artefacts dans Notes de revue.
 
 ## Tests
 

@@ -28,7 +28,7 @@ done_at:
 
 1. `AppleSignInService` (`sign_in_with_apple`, nonce brut et haché), `GoogleSignInService` (`google_sign_in`, clients iOS, Android et web depuis `env`, idToken et accessToken).
 2. `AuthRepositoryImpl.linkWithApple/linkWithGoogle` : `linkIdentityWithIdToken(provider, idToken, accessToken, nonce)` ; erreur « identity already exists » → `signInWithIdToken` avec le même jeton, et marquage `sync_state.needsMerge = true` ; annulation utilisateur → `AppError.validation` silencieuse.
-3. Capacité Sign in with Apple dans les deux identifiants iOS (manual-setup T-12) ; Android : `google_sign_in` configuré sans Firebase.
+3. Capacité Sign in with Apple dans les deux identifiants iOS (posée par T-15) ; Android : `google_sign_in` configuré sans Firebase.
 4. Si la liaison native d'un anonyme est refusée par Supabase, repli `linkIdentity(OAuthProvider.apple|google)` par navigateur avec `redirectTo` (vérifié à l'implémentation, documenté dans Notes de revue).
 
 ## Tests

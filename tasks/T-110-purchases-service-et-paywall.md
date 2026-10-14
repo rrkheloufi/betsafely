@@ -3,7 +3,7 @@ id: T-110
 title: PurchasesService, SubscriptionRepository, paywall et gardes d'entitlement
 status: todo
 phase: 11 Monétisation
-depends_on: [T-40, T-65, T-11]
+depends_on: [T-40, T-65, T-14]
 manual: false
 estimate: L
 model: opus
