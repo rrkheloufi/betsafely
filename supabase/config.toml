@@ -1,0 +1,54 @@
+# Configuration du CLI Supabase pour la base locale (tests pgTAP) et le projet lié.
+# Aucune valeur secrète ici : les secrets passent par `supabase secrets set`.
+project_id = "betsafely"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 17
+
+[db.pooler]
+enabled = false
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+site_url = "fr.rsquare.betsafely.dev://auth-callback"
+additional_redirect_urls = ["fr.rsquare.betsafely://auth-callback", "fr.rsquare.betsafely.dev://auth-callback"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+enable_signup = true
+enable_anonymous_sign_ins = true
+enable_manual_linking = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+otp_length = 6
+otp_expiry = 3600
+
+[auth.external.apple]
+enabled = false
+[auth.external.google]
+enabled = false
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+
+[functions.scan-ticket]
+verify_jwt = true
+[functions.revenuecat-webhook]
+verify_jwt = false
+[functions.delete-account]
+verify_jwt = true

@@ -1,0 +1,13 @@
+{
+  "FLAVOR": "prod",
+  "APP_NAME": "BetSafely",
+  "SUPABASE_URL": "https://REPLACE-prod-project-ref.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "REPLACE_WITH_PROD_PUBLISHABLE_KEY",
+  "RC_API_KEY_IOS": "REPLACE_WITH_REVENUECAT_APP_STORE_KEY",
+  "RC_API_KEY_ANDROID": "REPLACE_WITH_REVENUECAT_PLAY_STORE_KEY",
+  "SENTRY_DSN": "REPLACE_WITH_SENTRY_DSN",
+  "POSTHOG_API_KEY": "REPLACE_WITH_POSTHOG_KEY",
+  "POSTHOG_HOST": "https://eu.i.posthog.com",
+  "AUTH_REDIRECT_URL": "fr.rsquare.betsafely://auth-callback",
+  "LEGAL_BASE_URL": "https://REPLACE.github.io/betsafely"
+}

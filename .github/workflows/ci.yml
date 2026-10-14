@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
+
+env:
+  FLUTTER_VERSION: "3.47.0"
+
+jobs:
+  checks:
+    name: Scripts de contrôle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: chmod +x scripts/*.sh
+      - run: scripts/check-no-dash.sh
+      - run: scripts/check-no-hex.sh
+      - run: scripts/check-architecture.sh
+      - run: scripts/check-strings.sh
+      - run: scripts/check-tasks.sh
+
+  flutter:
+    name: Format, analyse, tests, build Android debug
+    runs-on: ubuntu-latest
+    needs: checks
+    steps:
+      - uses: actions/checkout@v4
+      - id: pubspec
+        run: echo "present=$([ -f pubspec.yaml ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - if: steps.pubspec.outputs.present == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - if: steps.pubspec.outputs.present == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - if: steps.pubspec.outputs.present == 'true'
+        run: flutter pub get
+      - if: steps.pubspec.outputs.present == 'true'
+        run: flutter gen-l10n
+      - if: steps.pubspec.outputs.present == 'true'
+        run: dart run build_runner build --delete-conflicting-outputs
+      - if: steps.pubspec.outputs.present == 'true'
+        run: dart format --output=none --set-exit-if-changed lib test integration_test
+      - if: steps.pubspec.outputs.present == 'true'
+        run: flutter analyze --no-pub
+      - if: steps.pubspec.outputs.present == 'true'
+        run: flutter test --no-pub
+      - if: steps.pubspec.outputs.present == 'true'
+        run: cp env/dev.example.json env/dev.json
+      - if: steps.pubspec.outputs.present == 'true'
+        run: flutter build apk --debug --flavor dev --dart-define-from-file=env/dev.json -t lib/main_dev.dart
+      - if: steps.pubspec.outputs.present == 'false'
+        run: echo "pubspec.yaml absent, étape Flutter ignorée (T-00 non faite)"
+
+  db:
+    name: Tests pgTAP
+    runs-on: ubuntu-latest
+    needs: checks
+    if: vars.CI_RUN_DB_TESTS == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase start
+      - run: supabase test db --local
+      - if: always()
+        run: supabase stop
+
+  functions:
+    name: Tests des Edge Functions
+    runs-on: ubuntu-latest
+    needs: checks
+    if: vars.CI_RUN_FUNCTION_TESTS == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: |
+          set -e
+          found=0
+          for t in supabase/functions/*/index_test.ts; do
+            [ -f "$t" ] || continue
+            found=1
+            (cd "$(dirname "$t")" && deno test --allow-env --allow-net --allow-read)
+          done
+          [ "$found" = 1 ] || echo "Aucun test de fonction"
+
+  ios:
+    name: Build iOS (sans signature)
+    runs-on: macos-latest
+    needs: checks
+    if: vars.CI_BUILD_IOS == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter gen-l10n
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: cp env/dev.example.json env/dev.json
+      - run: flutter build ios --no-codesign --flavor dev --dart-define-from-file=env/dev.json -t lib/main_dev.dart
